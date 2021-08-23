@@ -9,10 +9,10 @@ Build a website for patient registration with Go and Vue.js
 cd patient_registration/server
 
 # build
-go build -o main
+go build -ldflags "-w -s" -o server
 
 # run
-./main
+./server
 ```
 This web server will listen on http://localhost:8080
 
