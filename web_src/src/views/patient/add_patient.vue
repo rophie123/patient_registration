@@ -16,7 +16,8 @@
         <el-date-picker style="width: 100%"
                         v-model="patientForm.birth"
                         ref="birth"
-                        type="date">
+                        type="date"
+                        :picker-options="picker_birth_option">
         </el-date-picker>
       </el-form-item>
       <el-form-item label="Phone" prop="phone">
@@ -37,7 +38,7 @@
       <el-form-item label="Photo" prop="photo">
         <el-upload
           class="avatar-uploader"
-          action="http://localhost:8080/photo/upload"
+          :action="action"
           :show-file-list="false"
           :on-success="handleUploadSuccess"
           :before-upload="beforeUpload">
@@ -49,24 +50,22 @@
         <el-date-picker style="width: 100%"
                         v-model="patientForm.appointment_time"
                         ref="appointment_time"
-                        type="datetime">
+                        type="datetime"
+                        :picker-options="picker_appointment_time_option">
         </el-date-picker>
       </el-form-item>
       <el-button :loading="loading" type="primary" style="margin-top: 30px" @click.native.prevent="handleClick">Save
-      </el-button>
-      <el-button :loading="loading" style="margin-top: 30px">
-        <router-link to="/login">Back</router-link>
       </el-button>
     </el-form>
   </div>
 </template>
 
 <script>
-import {isEmpty, validEmail} from "@/utils/validate";
+import {isEmpty, validEmail, validPhone} from "@/utils/validate";
 import {Reg} from "@/api/user";
 
 export default {
-  name: "SignUp",
+  name: "AddPatient",
   data() {
     const validateName = (rule, value, callback) => {
       if (isEmpty(value)) {
@@ -83,15 +82,15 @@ export default {
       }
     }
     const validatePhone = (rule, value, callback) => {
-      if (isEmpty(value)) {
-        callback(new Error('Please enter the your phone'))
+      if (!validPhone(value)) {
+        callback(new Error('Please enter the your phone,example 13811111111'))
       } else {
         callback()
       }
     }
     const validateEmail = (rule, value, callback) => {
       if (!validEmail(value)) {
-        callback(new Error('Please enter the your phone'))
+        callback(new Error('Please enter the your email'))
       } else {
         callback()
       }
@@ -118,6 +117,16 @@ export default {
       }
     }
     return {
+      picker_birth_option:{
+        disabledDate:(time)=> {
+          return time.getTime() > Date.now()-1 * 24 * 3600 * 1000
+        }
+      },
+      picker_appointment_time_option:{
+        disabledDate:(time)=> {
+          return time.getTime() < Date.now()-1 * 24 * 3600 * 1000
+        }
+      },
       patientForm: {
         name: '',
         birth: '',
@@ -137,8 +146,12 @@ export default {
         appointment_time: [{required: true, trigger: 'blur', validator: validateAppointmentTime}],
       },
       loading: false,
-      imageUrl: ''
+      imageUrl: '',
+      action:''
     }
+  },
+  created() {
+    this.action=process.env.VUE_APP_BASE_API+'/photo/upload'
   },
   methods: {
     handleClick() {
@@ -186,7 +199,7 @@ export default {
   position: relative;
   width: 520px;
   max-width: 100%;
-  padding: 160px 35px 0;
+  padding: 35px 35px 0;
   margin: 0 auto;
   overflow: hidden;
 }

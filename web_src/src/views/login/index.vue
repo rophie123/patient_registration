@@ -42,9 +42,6 @@
       </el-form-item>
 
       <el-button :loading="loading" type="primary" style="width:30%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
-
-      <el-button style="width:30%;margin-bottom:30px;"><router-link to="/signup">Sign up</router-link></el-button>
-
       <div class="tips">
         <span style="margin-right:20px;">username: admin</span>
         <span> password: 123456</span>

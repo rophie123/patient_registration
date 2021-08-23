@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/rophie123/patient_registration/model"
-	"github.com/rophie123/patient_registration/router"
+	"github.com/rophie123/patient_registration/server/model"
+	"github.com/rophie123/patient_registration/server/router"
 )
 
 func main() {

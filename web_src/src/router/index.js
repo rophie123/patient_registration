@@ -1,10 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
-Vue.use(Router)
-
 /* Layout */
 import Layout from '@/layout'
+
+Vue.use(Router)
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -35,12 +34,7 @@ export const constantRoutes = [
     path: '/login',
     component: () => import('@/views/login/index'),
     hidden: true
-  },{
-    path: '/signup',
-    component: () => import('@/views/login/sign_up'),
-    hidden: true
   },
-
   {
     path: '/404',
     component: () => import('@/views/404'),
@@ -50,12 +44,21 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
-    redirect: '/patients',
+    redirect: '/add',
+    children: [{
+      path: 'add',
+      name: 'AddPatient',
+      component: () => import('@/views/patient/add_patient'),
+      meta: {title: 'Add Patient', icon: 'form'}
+    }]
+  }, {
+    component: Layout,
+    path: '/add',
     children: [{
       path: 'patients',
-      name: 'Dashboard',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Patients', icon: 'dashboard' }
+      name: 'Patients',
+      component: () => import('@/views/patient/index'),
+      meta: {title: 'Patient List', icon: 'table'}
     }]
   },
 ]
@@ -66,12 +69,12 @@ export const constantRoutes = [
  */
 export const asyncRoutes = [
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  {path: '*', redirect: '/404', hidden: true}
 ]
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
+  scrollBehavior: () => ({y: 0}),
   routes: constantRoutes
 })
 

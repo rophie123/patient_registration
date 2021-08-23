@@ -6,7 +6,7 @@ Build a website for patient registration with Go and Vue.js
 ```bash
 
 # enter the project directory
-cd patient_registration
+cd patient_registration/server
 
 # build
 go build -o main
@@ -30,4 +30,6 @@ npm install
 npm run dev
 ```
 This will automatically open http://localhost:9528
+
+build outputDir:  web_src/dist
 

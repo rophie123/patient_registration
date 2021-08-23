@@ -29,11 +29,11 @@
       <el-table-column
         label="Photo">
         <template slot-scope="scope">
-          <img :src="'http://localhost:8080/upload/'+scope.row.Photo" width="80">
+          <img :src="url+scope.row.Photo" width="80">
         </template>
       </el-table-column>
       <el-table-column
-        prop="appointment_time"
+        prop="AppointmentTime"
         label="Appointment Time">
       </el-table-column>
     </el-table>
@@ -45,7 +45,7 @@ import {mapGetters} from 'vuex'
 import {userList} from "@/api/user";
 
 export default {
-  name: 'Dashboard',
+  name: 'Patients',
   computed: {
     ...mapGetters([
       'name',
@@ -53,10 +53,12 @@ export default {
     ])
   }, data() {
     return {
-      patients: []
+      patients: [],
+      url:''
     }
   },
   created() {
+    this.url=process.env.VUE_APP_BASE_API+'/upload/'
     this.loadPatients()
   },
   methods: {
